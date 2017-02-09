@@ -4,13 +4,13 @@ metadata:
   name: kube-flannel-ds
   labels:
     tier: node
-    app: flannel
+    app: flannel-amd64
 spec:
   template:
     metadata:
       labels:
         tier: node
-        app: flannel
+        app: flannel-amd64
     spec:
       hostNetwork: true
       nodeSelector:
