@@ -2,6 +2,13 @@
 
 This repo contains Kubernetes configs for a multiarch cluster for flannel
 
+Make sure you use the following option for kubeadm as the flannel configs  
+uses 10.245.0.0/16
+
+```
+--pod-network-cidr 10.245.0.0/16
+```
+
 Run them in the following order on the master node
 
 For 1.6.0 run the following
