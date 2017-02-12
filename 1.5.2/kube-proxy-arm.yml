@@ -1,0 +1,48 @@
+apiVersion: extensions/v1beta1
+kind: DaemonSet
+metadata:
+  labels:
+    name: kube-proxy-arm
+    tier: node
+  name: kube-proxy-arm
+  namespace: kube-system
+spec:
+  selector:
+    matchLabels:
+      name: kube-proxy-arm
+      tier: node
+  template:
+    metadata:
+      labels:
+        name: kube-proxy-arm
+        tier: node
+    spec:
+      nodeSelector:
+        beta.kubernetes.io/arch: arm
+      containers:
+      - command:
+        - kube-proxy
+        - --kubeconfig=/run/kubeconfig
+        image: gcr.io/google_containers/kube-proxy-arm:v1.5.2
+        imagePullPolicy: IfNotPresent
+        name: kube-proxy-arm
+        securityContext:
+          privileged: true
+        terminationMessagePath: /dev/termination-log
+        volumeMounts:
+        - mountPath: /var/run/dbus
+          name: dbus
+        - mountPath: /run/kubeconfig
+          name: kubeconfig
+      dnsPolicy: ClusterFirst
+      hostNetwork: true
+      restartPolicy: Always
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - hostPath:
+          path: /etc/kubernetes/kubelet.conf
+        name: kubeconfig
+      - hostPath:
+          path: /var/run/dbus
+        name: dbus
